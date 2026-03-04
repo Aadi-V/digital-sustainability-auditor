@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Sustainability Auditor</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+scroll-behavior:smooth;
+}
+
+body{
+background:linear-gradient(-45deg,#0f2027,#203a43,#2c5364,#000000);
+background-size:400% 400%;
+animation:gradient 12s ease infinite;
+color:white;
+overflow-x:hidden;
+}
+
+@keyframes gradient{
+0%{background-position:0% 50%}
+50%{background-position:100% 50%}
+100%{background-position:0% 50%}
+}
+
+nav{
+position:fixed;
+width:100%;
+display:flex;
+justify-content:space-between;
+padding:20px 40px;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(10px);
+z-index:1000;
+}
+
+nav h2{
+font-family:'Orbitron',sans-serif;
+letter-spacing:2px;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+margin-left:25px;
+transition:.3s;
+}
+
+nav a:hover{
+color:#00ffcc;
+}
+
+.hero{
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:20px;
+}
+
+.hero h1{
+font-family:'Orbitron',sans-serif;
+font-size:3rem;
+margin-bottom:20px;
+}
+
+.hero p{
+max-width:600px;
+opacity:.8;
+margin-bottom:30px;
+}
+
+.btn{
+padding:14px 35px;
+border:none;
+border-radius:30px;
+background:#00ffcc;
+color:black;
+font-weight:600;
+cursor:pointer;
+transition:.3s;
+}
+
+.btn:hover{
+transform:scale(1.05);
+box-shadow:0 0 20px #00ffcc;
+}
+
+.section{
+padding:100px 20px;
+text-align:center;
+}
+
+.glass{
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(15px);
+border-radius:20px;
+padding:40px;
+max-width:900px;
+margin:auto;
+box-shadow:0 0 40px rgba(0,255,200,0.1);
+}
+
+.input-group{
+margin:20px 0;
+text-align:left;
+}
+
+.input-group label{
+display:block;
+margin-bottom:5px;
+}
+
+.input-group input{
+width:100%;
+padding:10px;
+border-radius:10px;
+border:none;
+outline:none;
+}
+
+.progress{
+height:25px;
+background:#111;
+border-radius:20px;
+overflow:hidden;
+margin-top:20px;
+}
+
+.progress-bar{
+height:100%;
+width:0%;
+background:#00ffcc;
+transition:1s;
+}
+
+.score{
+font-size:2rem;
+margin-top:20px;
+font-family:'Orbitron',sans-serif;
+}
+
+.loading{
+margin-top:15px;
+opacity:.7;
+display:none;
+}
+
+.footer{
+padding:30px;
+text-align:center;
+opacity:.6;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+<h2>DSA</h2>
+<div>
+<a href="#about">About</a>
+<a href="#audit">Audit</a>
+<a href="#contact">Join</a>
+</div>
+</nav>
+
+<section class="hero">
+<h1>The Digital Sustainability Auditor</h1>
+<p>An intelligent system that estimates digital carbon footprint using traffic, page weight, and infrastructure efficiency.</p>
+<button class="btn" onclick="document.getElementById('audit').scrollIntoView()">Run Audit</button>
+</section>
+
+<section class="section" id="about">
+<div class="glass">
+<h2>Why It Matters</h2>
+<p>Every website load consumes electricity through data centers and networks. This tool estimates digital emissions and gives a sustainability score.</p>
+</div>
+</section>
+
+<section class="section" id="audit">
+<div class="glass">
+<h2>Run Sustainability Audit</h2>
+
+<div class="input-group">
+<label>Monthly Website Visitors</label>
+<input type="number" id="visitors">
+</div>
+
+<div class="input-group">
+<label>Average Page Size (MB)</label>
+<input type="number" step="0.1" id="pagesize">
+</div>
+
+<div class="input-group">
+<label>Server Efficiency (1-10)</label>
+<input type="number" min="1" max="10" id="efficiency">
+</div>
+
+<button class="btn" id="analyzeBtn">Analyze</button>
+
+<div class="loading" id="loadingText">Scanning infrastructure...</div>
+
+<div class="progress">
+<div class="progress-bar" id="bar"></div>
+</div>
+
+<div class="score" id="scoreText">Score: --</div>
+<div class="score" id="carbonText">Carbon Output: --</div>
+
+</div>
+</section>
+
+<section class="section" id="contact">
+<div class="glass">
+<h2>Join The Movement</h2>
+<p>Build sustainable tech. Optimize systems. Reduce digital emissions.</p>
+<button class="btn">Join Hack Club</button>
+</div>
+</section>
+
+<div class="footer">
+ C. 2026 Digital Sustainability Auditor, By Aadi V.
+</div>
+
+<script>
+document.getElementById("analyzeBtn").addEventListener("click", function(){
+
+let visitors = parseFloat(document.getElementById("visitors").value);
+let pagesize = parseFloat(document.getElementById("pagesize").value);
+let efficiency = parseFloat(document.getElementById("efficiency").value);
+
+if(!visitors || !pagesize || !efficiency){
+alert("Please fill all fields correctly.");
+return;
+}
+
+if(efficiency <= 0) efficiency = 1;
+
+document.getElementById("loadingText").style.display = "block";
+
+setTimeout(function(){
+
+// Estimated carbon formula (improved scaling)
+let dataTransfer = visitors * pagesize; 
+let estimatedCO2 = dataTransfer * 0.0002; // kg estimate
+
+let sustainabilityScore = 100 - (estimatedCO2 / efficiency);
+
+if(sustainabilityScore < 0) sustainabilityScore = 0;
+if(sustainabilityScore > 100) sustainabilityScore = 100;
+
+document.getElementById("bar").style.width = sustainabilityScore + "%";
+document.getElementById("scoreText").innerText = "Score: " + sustainabilityScore.toFixed(1) + "/100";
+document.getElementById("carbonText").innerText = "Carbon Output: " + estimatedCO2.toFixed(2) + " kg CO₂ / month";
+
+if(sustainabilityScore > 75){
+document.getElementById("bar").style.background="#00ff88";
+}
+else if(sustainabilityScore > 40){
+document.getElementById("bar").style.background="#ffaa00";
+}
+else{
+document.getElementById("bar").style.background="#ff4444";
+}
+
+document.getElementById("loadingText").style.display = "none";
+
+}, 1200);
+
+});
+</script>
+
+</body>
+</html>
